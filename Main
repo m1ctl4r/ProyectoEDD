@@ -1,0 +1,92 @@
+import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class EstructuraDeDatosProyecto {
+    
+    public static int cargarArchivo(TablaHash tabla, String nombreArchivo) {
+        int contador = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                linea = linea.trim();
+
+                if (!linea.isEmpty()) {
+                    tabla.insertar(linea);
+                    contador++;
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }
+
+        return contador;
+    }
+
+    public static void main(String[] args) {
+        
+        Scanner scan = new Scanner(System.in);
+        TablaHash tabla = new TablaHash();
+        
+        int opcion;
+        
+        do{
+            System.out.println("======= MENU =======");
+            System.out.println("--- 1. Insertar nombre ---");
+            System.out.println("--- 2. Buscar nombre ---");
+            System.out.println("--- 3. Imprimir tabla ---");
+            System.out.println("--- 4. Cargar nombres con archivo .txt ---");
+            System.out.println("--- 5. Salir ---");
+            System.out.println("Elige una opcion...");
+            
+            opcion = scan.nextInt();
+            scan.nextLine();
+            
+            switch(opcion){
+                case 1:
+                    System.out.println("Ingresa el nombre a añadir: ");
+                    String nuevoNombre = scan.nextLine();
+                    tabla.insertar(nuevoNombre);
+                    System.out.println("Nombre agregado con exito...");
+                    break;
+                case 2:
+                    System.out.println("Ingresa el nombre a buscar: ");
+                    String nombreBuscar = scan.nextLine();
+                    boolean encontrado = tabla.buscar(nombreBuscar);
+                    
+                    if(encontrado == true){
+                        System.out.println("El nombre si esta registrado...");
+                    }else{
+                        System.out.println("El nombre no se encuentra registrado");
+                    }
+                    
+                    break;
+                case 3: 
+                    System.out.println("El contenido es...");
+                    tabla.imprimir();
+                    break;
+                case 4:
+                    System.out.println("Cargar nombres con archivo...");
+                    System.out.print("Ingresa el nombre del archivo (ejemplo: nombres.txt): ");
+                    String archivo = scan.nextLine();
+                    int cantidad = cargarArchivo(tabla, archivo);
+                    System.out.println("Se cargaron " + cantidad + " nombres desde el archivo.");
+                    break;
+                case 5:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opcion no calida");
+            }  
+            
+        }while(opcion != 5);
+        
+        scan.close();
+        
+    }
+    
+}
