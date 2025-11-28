@@ -1,0 +1,43 @@
+public class ListaEnlazada {
+    private Nodo inicio;
+
+    public ListaEnlazada() {
+        this.inicio = null;
+    }
+    
+    public void insertar(String nombre){
+        Nodo nuevoNodo = new Nodo(nombre);
+        nuevoNodo.setSig(inicio);
+        inicio = nuevoNodo;
+    }
+    
+    public boolean buscar(String nombre){
+        Nodo actual = inicio;
+        
+        while(actual != null){
+            if(actual.getNombre().equals(nombre)){
+                return true;
+            }
+            actual = actual.getSig();
+        }
+        return false;
+    }
+    
+    public void imprimir(){
+        Nodo actual = inicio;
+        
+        while(actual != null){
+            System.out.println(actual.getNombre());
+            System.out.println("  |  ");
+            actual = actual.getSig();
+        }
+        
+        System.out.println("null");
+        
+    }
+    
+    @Override
+    public String toString() {
+        return "ListaEnlazada{" + "inicio=" + inicio + '}';
+    }
+}
